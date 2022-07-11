@@ -663,6 +663,7 @@ public:
         : DialogWindow (TRANS("Add/remove items from toolbar"), Colours::white, true, true),
           toolbar (bar)
     {
+        setBackgroundColour(juce::LookAndFeel::getDefaultLookAndFeel().findColour(juce::ResizableWindow::ColourIds::backgroundColourId));
         setContentOwned (new CustomiserPanel (factory, toolbar, optionFlags), true);
         setResizable (true, true);
         setResizeLimits (400, 300, 1500, 1000);
