@@ -83,8 +83,10 @@ endfunction()
 
 macro(_juce_make_absolute path)
     if(NOT IS_ABSOLUTE "${${path}}")
-        get_filename_component("${path}" "${${path}}" ABSOLUTE BASE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+        get_filename_component(${path} "${${path}}" ABSOLUTE BASE_DIR "${CMAKE_CURRENT_LIST_DIR}")
     endif()
+
+    string(REGEX REPLACE "\\\\" "/" ${path} "${${path}}")
 endmacro()
 
 macro(_juce_make_absolute_and_check path)
@@ -249,7 +251,11 @@ function(_juce_get_platform_plugin_kinds out)
     endif()
 
     if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
-        list(APPEND result AAX Unity VST VST3 LV2)
+        list(APPEND result Unity VST VST3 LV2)
+    endif()
+
+    if(CMAKE_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        list(APPEND result AAX)
     endif()
 
     set(${out} ${result} PARENT_SCOPE)
